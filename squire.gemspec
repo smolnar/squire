@@ -8,9 +8,9 @@ Gem::Specification.new do |gem|
   gem.version       = Squire::VERSION
   gem.authors       = ["Samuel Molnar"]
   gem.email         = ["molnar.samuel@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = 'Your Personal Configuration Squire.'
+  gem.summary       = 'Squire handles your configuration files per class by common config DSL.'
+  gem.homepage      = "https://github.com/smolnar/squire"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
