@@ -44,9 +44,7 @@ module Squire
         elsif type == '?'
           !!get_value(name)
         else
-          value = get_value(name)
-
-          value.nil? ? super(method, *args, &block) : value
+          get_value(name)
         end
       end
 
