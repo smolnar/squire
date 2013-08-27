@@ -1,0 +1,6 @@
+defaults: &defaults
+
+development:
+  a: 1
+  nested:
+    b: 2
