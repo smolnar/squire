@@ -1,71 +1,55 @@
 module Squire
-  module Configuration
-    extend ActiveSupport::Concern
+  class Configuration
+    attr_accessor :namespace,
+                  :base_namespace,
+                  :source,
+                  :type
 
-    module ClassMethods
-      def config(&block)
-        @config ||= Entry.new
+    def namespace(namespace = nil, options = {})
+      return @namespace unless namespace
 
-        if block_given?
-          block.arity == 0 ? @config.instance_eval(&block) : block.call(@config)
-        end
+      @namespace      = namespace if namespace
+      @base_namespace = options[:base] if options[:base]
+    end
 
-        @config
+    def source(source = nil, options = {})
+      return @source unless source
+
+      @source = source
+
+      unless @source.is_a? Hash
+        @type = options[:type] || File.extname(@source)[1..-1].to_sym
+      else
+        @type = :hash
       end
     end
 
-    class Entry
-      RESERVED = [:get_value, :to_hash]
+    def settings
+      @settings ||= setup
 
-      def initialize(parent = nil)
-        @table    = Hash.new
-        @parent   = parent
-        @children = Array.new
+      settings = @namespace ? @settings.send(@namespace) : @settings
+
+      if block_given?
+        block.arity == 0 ? settings.instance_eval(&block) : block.call(settings)
       end
 
-      def method_missing(method, *args, &block)
-        _, name, type = *method.to_s.match(/(?<name>\w+)(?<type>[?=]{0,1})/)
+      settings
+    end
 
-        name = name.to_sym
+    alias :config :settings
 
-        if block_given?
-          if @table[name]
-            config = @table[name]
-          else
-            config = Entry.new(self)
+    def setup
+      return Squire::Setting.new unless @source
 
-            @table[name] = config
-            @children << config
-          end
+      parser = Squire::Parser.of(@type)
 
-          block.arity == 0 ? config.instance_eval(&block) : block.call(config)
-        elsif args.count == 1
-          @table[name] = args.pop
-        elsif type == '?'
-          !!get_value(name)
-        else
-          get_value(name)
-        end
-      end
+      hash = parser.parse(source)
 
-      def get_value(name)
-        return @table[name] if @table[name]
-        return @parent.get_value(name) if @parent
-      end
+      Squire::Settings.from_hash(hash)
+    end
 
-      def to_hash
-        result = Hash.new
-
-        @table.each do |key, value|
-          if value.is_a? Entry
-            value = value.to_hash
-          end
-
-          result[key] = value
-        end
-
-        result
-      end
+    def reload
+      @settings = nil
     end
   end
 end
