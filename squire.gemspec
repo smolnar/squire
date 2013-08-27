@@ -21,4 +21,6 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency 'rspec', '~> 2.6'
   gem.add_development_dependency 'pry'
+  gem.add_development_dependency 'pry-debugger'
+  gem.add_development_dependency 'fuubar'
 end
