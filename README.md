@@ -1,6 +1,6 @@
 # Squire
 
-Squire is your personal configuration squire. It bears your configuration for an object, so you dont need to worry about bunch of settings.
+Squire is your configuration squire. It bears your configuration for an object, so you dont need to worry about bunch of settings.
 
 ## Installation
 
