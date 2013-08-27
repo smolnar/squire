@@ -1,100 +1,96 @@
 require 'spec_helper'
 
 describe Squire::Configuration do
-  context 'when configurating' do
-    subject { Squire::Configuration::Entry }
+  subject { described_class.new }
 
-    it 'should define simple configuration' do
-      config = subject.new
-
-      config.a = 1
-      config.b   2
-
-      config.a.should eql(1)
-      config.b.should eql(2)
-    end
-
-    it 'should define nested configuration' do
-      config = subject.new
-
-      config.nested do |nested|
-        nested.a = 1
-      end
-
-      config.nested do
-        b 2
-      end
-
-      config.nested.a.should eql(1)
-      config.nested.b.should eql(2)
-    end
-
-    it 'should fallback to parent configuration if not defined' do
-      config = subject.new
-
-      config.global = 1
-
-      config.nested { |nested| nested.a = 1 }
-
-      config.nested.global.should eql(1)
-    end
-
-    it 'should check if the value is set' do
-      config = subject.new
-
-      config.a = 1
-      config.nested do |nested|
-        nested.b = 2
-      end
-
-      config.a?.should        be_true
-      config.nested.b?.should be_true
-      config.nested.a?.should be_true
-      config.global?.should   be_false
-    end
-  end
-
-  context 'when including' do
-    subject { Class.new { include Squire } }
-
-    it 'should properly setup configuration for the object' do
-      subject.config do |config|
-        config.a = 1
-      end
-
-      subject.config.a.should eql(1)
-    end
-  end
-
-  context 'when dumping' do
-    subject { Squire::Configuration::Entry }
-
-    it 'should provide hash dump' do
-      config = subject.new
-
-      config.a = 1
-      config.b = 2
-
-      config.nested do |nested|
-        nested.c = 3
-        nested.d = 4
-
-        nested.other do |other|
-          other.e = 5
-        end
-      end
-
-      config.to_hash.should eql({
+  let(:hash) {
+    {
+      development: {
         a: 1,
-        b: 2,
         nested: {
-          c: 3,
-          d: 4,
-          other: {
-            e: 5
-          }
+          b: 2
         }
-      })
+      },
+      production: {
+        a: 3
+      }
+    }
+  }
+
+  describe '#source' do
+    it 'should properly set hash as source' do
+      subject.source hash
+
+      subject.source.should eql(hash)
+    end
+
+    it 'should properly set yaml sa a source' do
+      subject.source 'config.yml'
+
+      subject.source.should eql('config.yml')
+      subject.type.should   eql(:yml)
+    end
+  end
+
+  describe '#namespace' do
+    it 'should properly set namespace' do
+      subject.source    hash
+      subject.namespace :development
+
+      subject.settings.a.should  eql(1)
+      subject.namespace.should   eql(:development)
+
+      expect { subject.settings.development }.to raise_exception(Squire::MissingSettingError)
+    end
+
+    it 'should properly handle runtime changing of namespaces' do
+      subject.source    hash
+      subject.namespace :development
+
+      subject.settings.a.should eql(1)
+
+      subject.namespace :production
+
+      subject.settings.a.should eql(3)
+    end
+  end
+
+  describe '#setup' do
+    let(:path) { '/path/to/file.yml'}
+    let(:factory) { double(:factory) }
+    let(:parser)  { double(:parser) }
+
+    it 'should setup basic settings from hash' do
+      subject.source(hash)
+
+      factory.should_receive(:of).with(:hash).and_return(parser)
+      parser.should_receive(:parse).with(hash).and_return(hash)
+
+      stub_const('Squire::Parser', factory)
+
+      settings = subject.setup
+
+      settings.to_hash.should eql(hash)
+    end
+
+    it 'should setup basic settings yml' do
+      factory.should_receive(:of).with(:yml).and_return(parser)
+      parser.should_receive(:parse).with(path).and_return(hash)
+
+      stub_const('Squire::Parser', factory)
+
+      subject.source(path)
+
+      settings = subject.settings
+
+      settings.development.a.should        eql(1)
+      settings.development.nested.b.should eql(2)
+    end
+
+    it 'should not setup source with unknown filetype' do
+      subject.source(path, type: :bogus)
+
+      expect { subject.setup }.to raise_error Squire::UndefinedParserError
     end
   end
 end
