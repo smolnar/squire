@@ -16,15 +16,13 @@ module Squire
       return @source unless source
 
       @source = source
+      @parser = options[:parser]
+      @type   = options[:type]
 
-      unless @source.is_a? Hash
-        @type = options[:type] || File.extname(@source)[1..-1].to_sym
-      else
-        @type = :hash
-      end
+      @type ||= source.is_a?(Hash) ? :hash : File.extname(@source)[1..-1].to_sym
     end
 
-    def settings
+    def settings(&block)
       @settings ||= setup
 
       settings = @namespace ? @settings.send(@namespace) : @settings
@@ -45,10 +43,16 @@ module Squire
 
       hash = parser.parse(source)
 
+      if base_namespace
+        hash.except(base_namespace).each do |key, values|
+          values.deep_merge!(hash[base_namespace])
+        end
+      end
+
       Squire::Settings.from_hash(hash)
     end
 
-    def reload
+    def reload!
       @settings = nil
     end
   end
