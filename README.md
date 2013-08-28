@@ -74,7 +74,8 @@ common: &common
   b: 2
     
   nested:
-      c: 3
+    c: 3
+    d: 5
         
 namespace:
   <<: *common
@@ -91,7 +92,7 @@ class Configuration
   squire.namespace 'namespace', base: :common
 end
 
-Configuration.nested.d # => 4
+Configuration.nested.d # => 4, namepace values overrides defaults
 Configuration.nested.c # => 3
 
 # or
