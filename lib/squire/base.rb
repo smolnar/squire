@@ -4,7 +4,7 @@ module Squire
 
     module ClassMethods
       def squire(&block)
-        @squire ||= Squire::Configuration.new(self)
+        @squire ||= Squire::Configuration.new
 
         if block_given?
           block.arity > 0 ? block.call(@squire) : @squire.instance_eval(&block)
@@ -14,7 +14,7 @@ module Squire
       end
 
       def config(&block)
-        squire.settings
+        squire.settings(&block)
       end
 
       def method_missing(method, *args, &block)
