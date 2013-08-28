@@ -5,6 +5,12 @@ describe Squire::Configuration do
 
   let(:hash) {
     {
+      defaults: {
+        nested: {
+          b: 3,
+          c: 4
+        }
+      },
       development: {
         a: 1,
         nested: {
@@ -52,6 +58,15 @@ describe Squire::Configuration do
       subject.namespace :production
 
       subject.settings.a.should eql(3)
+    end
+
+    it 'should handle base namespace overriding' do
+      subject.source    hash
+      subject.namespace :development, base: :defaults
+
+      subject.settings.a.should eql(1)
+      subject.settings.nested.b.should eql(3)
+      subject.settings.nested.c.should eql(4)
     end
   end
 
