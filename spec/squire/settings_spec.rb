@@ -52,6 +52,18 @@ describe Squire::Settings do
     config.global?.should   be_false
   end
 
+  it 'should cache value after setting' do
+    config = subject.new
+
+    config.a = 1
+    config.nested do |nested|
+      nested.b = 2
+    end
+
+    config.should respond_to(:a)
+    config.nested.should respond_to(:b)
+  end
+
   it 'should raise error when setting is missing' do
     config = subject.new
 
@@ -89,6 +101,30 @@ describe Squire::Settings do
   end
 
   describe '.from_hash' do
+    it 'it should parse settings from hash' do
+      settings = subject.from_hash({
+        a: 1,
+        b: 2,
+        nested: {
+          c: 3,
+          d: 4,
+          other: {
+            e: 5
+          }
+        }
+      })
 
+      settings.a.should eql(1)
+      settings.b.should eql(2)
+
+      settings.nested do |nested|
+        nested.c.should eql(3)
+        nested.d.should eql(4)
+
+        nested.other do |other|
+          other.e.should eql(5)
+        end
+      end
+    end
   end
 end
