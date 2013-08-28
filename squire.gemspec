@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = Squire::VERSION
   gem.authors       = ['Samuel Molnar']
   gem.email         = ['molnar.samuel@gmail.com']
-  gem.description   = 'Your Personal Configuration Squire.'
-  gem.summary       = 'Squire handles your configuration files per class by common config DSL.'
+  gem.description   = 'Your configuration squire.'
+  gem.summary       = 'Squire handles your configuration per class/file by common config DSL and extensible source formats.'
   gem.homepage      = 'https://github.com/smolnar/squire'
 
   gem.files         = `git ls-files`.split($/)
@@ -23,4 +23,6 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'pry'
   gem.add_development_dependency 'pry-debugger'
   gem.add_development_dependency 'fuubar'
+  gem.add_development_dependency 'settingslogic'
+  gem.add_development_dependency 'ruby-prof'
 end
