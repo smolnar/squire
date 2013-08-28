@@ -88,15 +88,17 @@ class Configuration
 end
 
 Configuration.nested.d # => 4
+Configuration.nested.c # => 3
 
 # or
 
 Configuration.config.nested.d # => 4
+Configuration.config.nested.c # => 3
 ```
 
 After including `Squire::Base`, you can access `squire` and `config`, but you dont have to write `Configuration.config.a` to access settings, just type `Configuration.a` and the call gets delegated to `config`.
 
-Default namespace set by `base` option in `squire.namespace` is used for merging default values for all namespaces, since they get overriden by YAML and other parsers ([Settingslogic issue])[https://github.com/binarylogic/settingslogic/issues/21].
+Default namespace set by `base` option in `squire.namespace` is used for merging default values for all namespaces, since they get overriden by YAML and other parsers. For more information, see [Settingslogic issue](https://github.com/binarylogic/settingslogic/issues/21).
 
 ## Contributing
 
@@ -105,3 +107,15 @@ Default namespace set by `base` option in `squire.namespace` is used for merging
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## Licence 
+
+### This code is free to use under the terms of the MIT license.
+
+Copyright (c) 2013 Samuel Molnár
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
