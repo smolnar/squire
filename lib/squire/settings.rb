@@ -27,24 +27,26 @@ module Squire
         block.arity == 0 ? config.instance_eval(&block) : block.call(config)
       elsif args.count == 1
         @table[key] = args.pop
+
+        define_key_accessor(key)
       elsif type == '?'
         !!get_value(key)
       else
         value = get_value(key)
 
-        return value unless value.nil?
+        unless value
+          raise MissingSettingError.new("Missing setting in '#{key}' in '#{@path}'.")
+        end
 
-        raise MissingSettingError.new("Missing setting in '#{key}' in '#{@path}'.")
+        define_key_accessor(key) unless repond_to?(key)
+
+        value
       end
     end
 
     def get_value(key)
       return @table[key] if @table[key]
       return @parent.get_value(key) if @parent
-    end
-
-    def has_key?(key)
-      !!@table[key]
     end
 
     def to_hash
@@ -73,6 +75,12 @@ module Squire
       end
 
       result
+    end
+
+    private
+
+    def define_key_accessor(key)
+      define_singleton_method(key) { get_value(key) } if key =~ /\A\w+\z/
     end
   end
 end
