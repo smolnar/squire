@@ -35,7 +35,7 @@ class Elephant
     
   squire do
     namespace 'namespace'
-      ....
+    ....
   end
 ```
 
@@ -51,7 +51,7 @@ Elephant.config do |config|
   config.a = 1
   
   config.nested do |nested|
-      ....
+    ....
   end
 end
 ```
@@ -63,6 +63,8 @@ No other methods except `squire` and `config` are included.
 For replacing Settingslogic functionality, you can refactor your configuration like this:
 
 ```yaml
+-- source.yml
+
 common: &common
   a: 1
   b: 2
