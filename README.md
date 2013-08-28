@@ -1,6 +1,6 @@
 # Squire
 
-![alt text](https://raw.github.com/smolnar/squire/master/squire.png "Logo Title Text 1")
+![alt text](https://raw.github.com/smolnar/squire/master/squire.png "Source: http://www.printactivities.com/ColoringPages/Knights/Squire.html")
 
 Squire is your configuration squire thats bears your configuration for object, so you don't need to worry about bunch of settings.
 
