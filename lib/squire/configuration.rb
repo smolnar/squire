@@ -1,10 +1,13 @@
 module Squire
   class Configuration
-    attr_accessor :namespace,
-                  :base_namespace,
-                  :source,
-                  :type
+    attr_accessor :base_namespace, :type
 
+    ##
+    # Sets and returns +namespace+.
+    # If called without parameters, returns +namespace+.
+    #
+    # Possible options:
+    # * <tt>:base</tt> - base namespace used for deep merging of values of other namespaces
     def namespace(namespace = nil, options = {})
       return @namespace unless namespace
 
@@ -12,6 +15,13 @@ module Squire
       @base_namespace = options[:base] if options[:base]
     end
 
+    ##
+    # Sets +source+ for the configuration
+    # If called without parameters, returns +source+.
+    #
+    # Possible options:
+    # * <tt>:type</tt> - type of +source+ (optional, based on file extension)
+    # * <tt>:parser</tt> - parse of input +source+ (optional, based on +:type+)
     def source(source = nil, options = {})
       return @source unless source
 
@@ -22,6 +32,20 @@ module Squire
       @type ||= source.is_a?(Hash) ? :hash : File.extname(@source)[1..-1].to_sym
     end
 
+    ##
+    # Loaded configuration stored in Settings class.
+    # Accepts +block+ as parameter.
+    #
+    # == Examples
+    #   settings do |settings|
+    #     settings.a = 1
+    #   end
+    #
+    #   settings do
+    #     a 1
+    #   end
+    #
+    #   settings.a = 1
     def settings(&block)
       @settings ||= setup
 
@@ -36,6 +60,10 @@ module Squire
 
     alias :config :settings
 
+    ##
+    # Sets up the configuration based on +namespace+ and +source+.
+    # If +base_namespace+ provided, merges it's values with other namespaces for handling
+    # nested overriding of values.
     def setup
       return Squire::Setting.new unless @source
 
@@ -52,6 +80,8 @@ module Squire
       Squire::Settings.from_hash(hash)
     end
 
+    ##
+    # Reloads the +settings+.
     def reload!
       @settings = nil
     end

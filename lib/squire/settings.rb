@@ -2,6 +2,9 @@ module Squire
   class Settings
     RESERVED = [:get_value, :to_hash]
 
+    ##
+    # Creates new settings with +path+ and +parent+.
+    # For top level settings (usually namespace), the is no +parent+ or +path+ specified.
     def initialize(path = nil, parent = nil)
       @path     = path
       @table    = Hash.new
@@ -9,6 +12,29 @@ module Squire
       @children = Array.new
     end
 
+    ##
+    # Handles settting of values.
+    # 
+    # == Examples
+    # Setting a value:
+    #   .value = 2
+    #   .value   2
+    #
+    # Getting a value:
+    #   .value # => 2
+    #
+    # Checking a value:
+    #   .value? # => true
+    #
+    # If block provided, it yields +key+ as parent.
+    #
+    #   .value do |value|
+    #     ...
+    #   end
+    #
+    #   .value do
+    #     ...
+    #   end
     def method_missing(method, *args, &block)
       _, key, type = *method.to_s.match(/(?<key>\w+)(?<type>[?=]{0,1})/)
 
@@ -44,11 +70,21 @@ module Squire
       end
     end
 
+    ##
+    # Returns a value for +key+ from settings table.
+    #
+    # Goes up in ancestor chain by +parent+ until reaches a top. So if you define settings like
+    #   settings.a = 1
+    # and ask for
+    #   settings.nested.a
+    # it returns +settings.a+.
     def get_value(key)
       return @table[key] if @table[key]
       return @parent.get_value(key) if @parent
     end
 
+    ##
+    # Dumps settings as hash.
     def to_hash
       result = Hash.new
 
@@ -63,6 +99,8 @@ module Squire
       result
     end
 
+    ## 
+    # Loads new settings from provided +hash+.
     def self.from_hash(hash, parent = nil)
       result = Settings.new
 
@@ -79,6 +117,8 @@ module Squire
 
     private
 
+    ##
+    # Defines key accessor for +key+ for faster accessing of keys.
     def define_key_accessor(key)
       define_singleton_method(key) { get_value(key) } if key =~ /\A\w+\z/
     end

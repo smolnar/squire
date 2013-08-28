@@ -1,5 +1,7 @@
 module Squire
   module Parser
+    ## 
+    # Creates parser based on provided +type+.
     def self.of(type)
       case type
       when :hash       then Hash
