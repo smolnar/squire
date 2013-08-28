@@ -34,7 +34,7 @@ class Elephant
   # or 
     
   squire do
-      namespace 'namespace'
+    namespace 'namespace'
       ....
   end
 ```
@@ -63,7 +63,7 @@ No other methods except `squire` and `config` are included.
 For replacing Settingslogic functionality, you can refactor your configuration like this:
 
 ```yaml
-common:
+common: &common
   a: 1
   b: 2
     
@@ -71,7 +71,7 @@ common:
       c: 3
         
 namespace:
-  <<: *defaults
+  <<: *common
     
   nested:
     d: 4
