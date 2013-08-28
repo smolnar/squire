@@ -14,7 +14,7 @@ module Squire
 
     ##
     # Handles settting of values.
-    # 
+    #
     # == Examples
     # Setting a value:
     #   .value = 2

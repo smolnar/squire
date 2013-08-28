@@ -63,7 +63,9 @@ module Squire
     ##
     # Sets up the configuration based on +namespace+ and +source+.
     # If +base_namespace+ provided, merges it's values with other namespaces for handling
-    # nested overriding of values.
+    # nested overriding of values. 
+    #
+    # Favours values from +namespace+ over values from +base_namespace+.
     def setup
       return Squire::Setting.new unless @source
 
@@ -73,7 +75,8 @@ module Squire
 
       if base_namespace
         hash.except(base_namespace).each do |key, values|
-          values.deep_merge!(hash[base_namespace])
+          # favours value from namespace over value from defaults
+          values.deep_merge!(hash[base_namespace]) { |_, value, _| value }
         end
       end
 

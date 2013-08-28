@@ -65,8 +65,8 @@ describe Squire::Configuration do
       subject.namespace :development, base: :defaults
 
       subject.settings.a.should eql(1)
-      subject.settings.nested.b.should eql(3)
-      subject.settings.nested.c.should eql(4)
+      subject.settings.nested.b.should eql(2) # from development.nested.b
+      subject.settings.nested.c.should eql(4) # from defaults.nested.c
     end
   end
 
