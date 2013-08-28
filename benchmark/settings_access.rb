@@ -2,6 +2,7 @@ require 'settingslogic'
 require 'squire'
 require 'yaml'
 require 'benchmark'
+require 'fileutils'
 
 def generate_hash(number = 10000, nested = true)
   result = Hash.new
@@ -56,3 +57,4 @@ Benchmark.bmbm do |x|
   x.report('Settingslogic') { 10000.times { |n| SettingslogicTest.send("key_#{n}").send("key_0") } }
 end
 
+FileUtils.rm 'source.yml'
