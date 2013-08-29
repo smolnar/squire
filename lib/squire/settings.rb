@@ -61,7 +61,7 @@ module Squire
       else
         value = get_value(key)
 
-        unless value
+        if value.nil?
           raise MissingSettingError.new("Missing setting in '#{key}' in '#{@path}'.")
         end
 
@@ -80,7 +80,7 @@ module Squire
     #   settings.nested.a
     # it returns +settings.a+.
     def get_value(key)
-      return @table[key] if @table[key]
+      return @table[key] unless @table[key].nil?
       return @parent.get_value(key) if @parent
     end
 
