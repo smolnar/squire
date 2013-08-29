@@ -42,17 +42,18 @@ module Squire
 
       if block_given?
         if @table[key]
-          config = @table[key]
+          settings = @table[key]
         else
-          config = Settings.new(@path ? "#{@path}.#{key}" : key, self)
+          settings = Settings.new(@path ? "#{@path}.#{key}" : key, self)
 
-          @table[key] = config
-          @children << config
+          set_value(key, settings)
+
+          @children << settings
         end
 
-        block.arity == 0 ? config.instance_eval(&block) : block.call(config)
+        block.arity == 0 ? settings.instance_eval(&block) : block.call(settings)
       elsif args.count == 1
-        @table[key] = args.pop
+        set_value(key, args.pop)
 
         define_key_accessor(key)
       elsif type == '?'
@@ -84,6 +85,12 @@ module Squire
     end
 
     ##
+    # Sets a +value+ for +key+
+    def set_value(key, value)
+      @table[key] = value
+    end
+
+    ##
     # Dumps settings as hash.
     def to_hash
       result = Hash.new
@@ -99,7 +106,7 @@ module Squire
       result
     end
 
-    ## 
+    ##
     # Loads new settings from provided +hash+.
     def self.from_hash(hash, parent = nil)
       result = Settings.new
@@ -109,7 +116,7 @@ module Squire
           value = from_hash(value, result)
         end
 
-        result.send(key, value)
+        result.set_value(key, value)
       end
 
       result
