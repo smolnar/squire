@@ -74,7 +74,8 @@ common: &common
   b: 2
     
   nested:
-      c: 3
+    c: 3
+    d: 5
         
 namespace:
   <<: *common
@@ -91,7 +92,7 @@ class Configuration
   squire.namespace 'namespace', base: :common
 end
 
-Configuration.nested.d # => 4
+Configuration.nested.d # => 4, namepace values overrides defaults
 Configuration.nested.c # => 3
 
 # or
@@ -103,6 +104,22 @@ Configuration.config.nested.c # => 3
 After including `Squire::Base`, you can access `squire` and `config`, but you dont have to write `Configuration.config.a` to access settings, just type `Configuration.a` and the call gets delegated to `config`.
 
 Default namespace set by `base` option in `squire.namespace` is used for merging default values for all namespaces, since they get overriden by YAML and other parsers. For more information, see [Settingslogic issue](https://github.com/binarylogic/settingslogic/issues/21).
+
+## Statistics
+
+Run `bundle exec ruby benchmark/settings_access.rb`.
+
+Single access:
+```
+Rehearsal -------------------------------------------------
+Squire          1.950000   0.030000   1.980000 (  1.977590)
+Settingslogic  15.810000   0.100000  15.910000 ( 15.969627)
+--------------------------------------- total: 17.890000sec
+
+                    user     system      total        real
+Squire          0.090000   0.000000   0.090000 (  0.093573)
+Settingslogic   0.060000   0.000000   0.060000 (  0.066079)
+```
 
 ## Contributing
 
