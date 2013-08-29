@@ -67,7 +67,7 @@ module Squire
     #
     # Favours values from +namespace+ over values from +base_namespace+.
     def setup
-      return Squire::Setting.new unless @source
+      return Squire::Settings.new unless @source
 
       parser = Squire::Parser.of(@type)
 

@@ -17,11 +17,13 @@ module Squire
 
   module ClassMethods
     def squire(&block)
-      Proxy.squire(&block)
+      @squire_proxy ||= Proxy.new(self)
+
+      @squire_proxy.squire(&block)
     end
 
     def config(&block)
-      Proxy.config(&block)
+      squire.config(&block)
     end
   end
 end
