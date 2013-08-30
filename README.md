@@ -41,6 +41,7 @@ class Elephant
     namespace 'namespace'
     ....
   end
+end
 ```
 
 After that, you can access `Elephanth.config`. For example:
@@ -107,7 +108,8 @@ Default namespace set by `base` option in `squire.namespace` is used for merging
 
 ## Statistics
 
-Run `bundle exec ruby benchmark/settings_access.rb`.
+Run `bundle exec ruby benchmark/settings_access.rb`. 
+Example uses Hash with 10 000 keys.
 
 Single access:
 ```
@@ -120,6 +122,9 @@ Settingslogic  15.810000   0.100000  15.910000 ( 15.969627)
 Squire          0.090000   0.000000   0.090000 (  0.093573)
 Settingslogic   0.060000   0.000000   0.060000 (  0.066079)
 ```
+
+First access of key in `Settingslogic` is painfully slow, as you can see. But after defining accessor, the second access
+is just a matter of miliseconds.
 
 ## Contributing
 
