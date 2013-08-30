@@ -1,12 +1,9 @@
 # Squire
 
-![alt text](https://raw.github.com/smolnar/squire/master/squire.png "Source: http://www.printactivities.com/ColoringPages/Knights/Squire.html")
-
 Squire is your configuration squire thats bears your configuration for object, so you don't need to worry about bunch of settings.
 
 It's designed to support multiple formats (for now, Hash and YML) and replace [Settingslogic](https://github.com/binarylogic/settingslogic) that lacks some crutial features like default/base namespace or extensibility for another source formats.
 
-Logo is courtesy of [PrintActivities](http://www.printactivities.com/ColoringPages/Knights/Squire.html).
 
 ## Installation
 
