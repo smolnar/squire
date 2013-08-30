@@ -8,13 +8,15 @@ describe Squire::Configuration do
       defaults: {
         nested: {
           b: 3,
-          c: 4
+          c: 4,
+          d: true
         }
       },
       development: {
         a: 1,
         nested: {
-          b: 2
+          b: 2,
+          d: false
         }
       },
       production: {
@@ -66,6 +68,7 @@ describe Squire::Configuration do
 
       subject.settings.a.should eql(1)
       subject.settings.nested.b.should eql(2) # from development.nested.b
+      subject.settings.nested.d.should be_false # from development.nested.d
       subject.settings.nested.c.should eql(4) # from defaults.nested.c
     end
   end
