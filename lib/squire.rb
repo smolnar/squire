@@ -1,6 +1,5 @@
 require 'active_support/concern'
 require 'active_support/core_ext/hash/keys'
-# TODO: wait for PR to be merged in ActiveSupport
 # require 'active_support/core_ext/hash/deep_merge'
 require 'squire/core_ext/hash/deep_merge'
 require 'active_support/core_ext/hash/except'
