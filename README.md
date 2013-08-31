@@ -111,13 +111,13 @@ Example uses Hash with 10 000 keys.
 Single access:
 ```
 Rehearsal -------------------------------------------------
-Squire          1.950000   0.030000   1.980000 (  1.977590)
-Settingslogic  15.810000   0.100000  15.910000 ( 15.969627)
---------------------------------------- total: 17.890000sec
+Squire          0.740000   0.020000   0.760000 (  0.761124)
+Settingslogic   8.030000   0.040000   8.070000 (  8.106668)
+---------------------------------------- total: 8.830000sec
 
                     user     system      total        real
-Squire          0.090000   0.000000   0.090000 (  0.093573)
-Settingslogic   0.060000   0.000000   0.060000 (  0.066079)
+Squire          0.050000   0.000000   0.050000 (  0.048144)
+Settingslogic   0.040000   0.000000   0.040000 (  0.045643)
 ```
 
 First access of key in `Settingslogic` is painfully slow, as you can see. But after defining accessor, the second access
