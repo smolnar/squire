@@ -11,8 +11,8 @@ module Squire
     def namespace(namespace = nil, options = {})
       return @namespace unless namespace
 
-      @namespace      = namespace if namespace
-      @base_namespace = options[:base] if options[:base]
+      @namespace      = namespace.to_sym if namespace
+      @base_namespace = options[:base].to_sym if options[:base]
     end
 
     ##
