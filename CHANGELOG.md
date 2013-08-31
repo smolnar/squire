@@ -1,3 +1,9 @@
+### 1.2.2
+* Fix issue with existing methods in Settings.
+* Add better accessor caching.
+
+  *Samuel Molnár*
+
 ### 1.2.1
 
 * Fix minor bug with ActiveSupport Hash#deep_merge! omitting block for false keys. 
