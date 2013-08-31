@@ -28,16 +28,6 @@ describe Squire::Settings do
     config.nested.b.should eql(2)
   end
 
-  it 'should fallback to parent configuration if not defined' do
-    config = subject.new
-
-    config.global = 1
-
-    config.nested { |nested| nested.a = 1 }
-
-    config.nested.global.should eql(1)
-  end
-
   it 'should check if the value is set' do
     config = subject.new
 
@@ -48,7 +38,7 @@ describe Squire::Settings do
 
     config.a?.should        be_true
     config.nested.b?.should be_true
-    config.nested.a?.should be_true
+    config.nested.a?.should be_false
     config.global?.should   be_false
   end
 

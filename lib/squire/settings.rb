@@ -1,6 +1,6 @@
 module Squire
   class Settings
-    RESERVED = [:get_value, :to_hash]
+    RESERVED = [:get_value, :set_value, :define_key_accessor, :to_hash]
 
     ##
     # Creates new settings with +path+ and +parent+.
@@ -51,11 +51,9 @@ module Squire
           @children << settings
         end
 
-        block.arity == 0 ? settings.instance_eval(&block) : block.call(settings)
+        get_value(key, &block)
       elsif args.count == 1
         set_value(key, args.pop)
-
-        define_key_accessor(key)
       elsif type == '?'
         !!get_value(key)
       else
@@ -65,29 +63,41 @@ module Squire
           raise MissingSettingError.new("Missing setting in '#{key}' in '#{@path}'.")
         end
 
-        define_key_accessor(key) unless repond_to?(key)
-
         value
       end
     end
 
     ##
     # Returns a value for +key+ from settings table.
+    # Yields +value+ of +key+ if +block+ provided.
     #
-    # Goes up in ancestor chain by +parent+ until reaches a top. So if you define settings like
-    #   settings.a = 1
-    # and ask for
-    #   settings.nested.a
-    # it returns +settings.a+.
-    def get_value(key)
-      return @table[key] unless @table[key].nil?
-      return @parent.get_value(key) if @parent
+    # == Examples:
+    #
+    #   .key do |key|
+    #     ...
+    #   end
+    #
+    #   # or
+    #
+    #   .key do
+    #     ...
+    #   end
+    def get_value(key, &block)
+      value = @table[key]
+
+      if block_given?
+        block.arity == 0 ? value.instance_eval(&block) : block.call(value)
+      end
+
+      value
     end
 
     ##
     # Sets a +value+ for +key+
     def set_value(key, value)
       @table[key] = value
+
+      define_key_accessor(key)
     end
 
     ##
@@ -127,7 +137,9 @@ module Squire
     ##
     # Defines key accessor for +key+ for faster accessing of keys.
     def define_key_accessor(key)
-      define_singleton_method(key) { get_value(key) } if key =~ /\A\w+\z/
+      define_singleton_method(key) do |&block|
+        get_value(key, &block)
+      end
     end
   end
 end
