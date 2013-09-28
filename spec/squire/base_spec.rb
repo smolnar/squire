@@ -35,5 +35,6 @@ describe Squire::Base do
     subject.squire.namespace :test
 
     subject.a.should eql(1)
+    subject.b.should eql(2)
   end
 end

@@ -1,5 +1,7 @@
 module Squire
-  class Settings
+  class Settings < BasicObject
+    include ::Kernel
+
     RESERVED = [:get_value, :set_value, :define_key_accessor, :to_hash]
 
     ##
@@ -7,9 +9,9 @@ module Squire
     # For top level settings (usually namespace), the is no +parent+ or +path+ specified.
     def initialize(path = nil, parent = nil)
       @path     = path
-      @table    = Hash.new
+      @table    = ::Hash.new
       @parent   = parent
-      @children = Array.new
+      @children = ::Array.new
     end
 
     ##
@@ -103,7 +105,7 @@ module Squire
     ##
     # Dumps settings as hash.
     def to_hash
-      result = Hash.new
+      result = ::Hash.new
 
       @table.each do |key, value|
         if value.is_a? Settings
@@ -122,7 +124,7 @@ module Squire
       result = Settings.new
 
       hash.each_pair do |key, value|
-        if value.is_a? Hash
+        if value.is_a? ::Hash
           value = from_hash(value, result)
         end
 
