@@ -2,7 +2,7 @@ module Squire
   module Parser
     module Hash
       def self.parse(source)
-        source.deep_symbolize_keys
+        source
       end
     end
   end
