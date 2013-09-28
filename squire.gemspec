@@ -11,6 +11,7 @@ Gem::Specification.new do |gem|
   gem.description   = 'Your configuration squire.'
   gem.summary       = 'Squire handles your configuration per class/file by common config DSL and extensible source formats.'
   gem.homepage      = 'https://github.com/smolnar/squire'
+  gem.license       = 'MIT'
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

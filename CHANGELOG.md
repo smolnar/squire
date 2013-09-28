@@ -1,3 +1,16 @@
+### 1.2.4
+* Fix gemspec licence (#1)
+* Use BasicObject as clean slate for Squire::Setting
+* Drop pretty strict ActiveSupport dependency to 3.0.0 or higher.
+
+  *Samuel Molnár*
+
+### 1.2.3
+* Fix issue with existing methods. Consider using BasicObject as blank slate 
+  for Squire::Settings.
+
+  *Samuel Molnár*
+
 ### 1.2.2
 * Fix issue with existing methods in Settings.
 * Add better accessor caching.
