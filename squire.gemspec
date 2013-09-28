@@ -8,7 +8,7 @@ Gem::Specification.new do |gem|
   gem.version       = Squire::VERSION
   gem.authors       = ['Samuel Molnar']
   gem.email         = ['molnar.samuel@gmail.com']
-  gem.description   = 'Your configuration squire.'
+  gem.description   = 'Squire handles your configuration by common config DSL.'
   gem.summary       = 'Squire handles your configuration per class/file by common config DSL and extensible source formats.'
   gem.homepage      = 'https://github.com/smolnar/squire'
   gem.license       = 'MIT'
