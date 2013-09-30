@@ -1,3 +1,9 @@
+### 1.2.5
+* Use HashWithIndifferentAccess for accessing parser result
+* Add better string representation of Squire::Settings
+
+  *Samuel Molnár*
+
 ### 1.2.4
 * Fix gemspec licence (#1)
 * Use BasicObject as clean slate for Squire::Setting
