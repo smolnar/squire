@@ -36,5 +36,7 @@ describe Squire::Base do
 
     subject.a.should eql(1)
     subject.b.should eql(2)
+
+    expect { subject.c }.to raise_error(Squire::MissingSettingError, /Missing setting 'c' in 'test'/)
   end
 end

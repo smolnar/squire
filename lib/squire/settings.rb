@@ -1,8 +1,6 @@
 module Squire
-  class Settings < BasicObject
-    include ::Kernel
-
-    RESERVED = [:get_value, :set_value, :define_key_accessor, :to_hash]
+  class Settings
+    RESERVED = [:get_value, :set_value, :define_key_accessor, :to_hash, :to_s, :[]]
 
     ##
     # Creates new settings with +path+ and +parent+.
@@ -62,7 +60,7 @@ module Squire
         value = get_value(key)
 
         if value.nil?
-          raise MissingSettingError.new("Missing setting in '#{key}' in '#{@path}'.")
+          raise MissingSettingError.new("Missing setting '#{key}' in '#{@path}'.")
         end
 
         value
@@ -85,6 +83,7 @@ module Squire
     #     ...
     #   end
     def get_value(key, &block)
+      key   = key.to_sym
       value = @table[key]
 
       if block_given?
@@ -119,16 +118,28 @@ module Squire
     end
 
     ##
+    # Shows string representation of settings
+    def to_s
+      "#<#{self.class.name} #{@table.map { |key, value| "#{key}=#{value}"}.join(', ')}>"
+    end
+
+    ##
+    # Access +key+ from table directly
+    def [](key)
+      get_value(key)
+    end
+
+    ##
     # Loads new settings from provided +hash+.
     def self.from_hash(hash, parent = nil)
-      result = Settings.new
+      result = Settings.new(parent)
 
       hash.each_pair do |key, value|
         if value.is_a? ::Hash
-          value = from_hash(value, result)
+          value = from_hash(value, key)
         end
 
-        result.set_value(key, value)
+        result.set_value(key.to_sym, value)
       end
 
       result

@@ -1,5 +1,6 @@
 require 'active_support/concern'
 require 'active_support/core_ext/hash/except'
+require 'active_support/core_ext/hash/indifferent_access'
 require 'squire/core_ext/hash/deep_merge'
 require 'squire/version'
 require 'squire/exceptions'

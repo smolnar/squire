@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+# :TODO: Refactor redundant usage of subject
+
 describe Squire::Settings do
   subject { Squire::Settings }
 
@@ -57,7 +59,34 @@ describe Squire::Settings do
   it 'should raise error when setting is missing' do
     config = subject.new
 
-    expect { config.a }.to raise_error(Squire::MissingSettingError)
+    expect { config.a }.to raise_error(Squire::MissingSettingError, /Missing setting 'a'/)
+  end
+
+  describe '#to_s' do
+    it 'should convert settings to string representation' do
+      config = subject.new
+
+      config.a = 1
+      config.b = 2
+
+      config.nested do |nested|
+        nested.c = 3
+      end
+
+      config.to_s.should eql('#<Squire::Settings a=1, b=2, nested=#<Squire::Settings c=3>>')
+    end
+  end
+
+  describe '#[]' do
+    it 'should allow accesing keys in hash manner' do
+      config = subject.new
+
+      config.a = 1
+
+      config[:a].should  eql(1)
+      config['a'].should eql(1)
+      config[:b].should  be_nil
+    end
   end
 
   describe '#to_hash' do
