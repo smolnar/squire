@@ -71,7 +71,7 @@ module Squire
 
       parser = Squire::Parser.of(@type)
 
-      hash = parser.parse(source)
+      hash = parser.parse(source).with_indifferent_access
 
       if base_namespace
         hash.except(base_namespace).each do |key, values|
