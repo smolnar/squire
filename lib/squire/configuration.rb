@@ -76,7 +76,7 @@ module Squire
       if base_namespace
         hash.except(base_namespace).each do |key, values|
           # favours value from namespace over value from defaults
-          values.deep_merge!(hash[base_namespace]) { |_, value, _| value }
+          hash[key] = hash[base_namespace].deep_merge(values) { |_, default, value| value.nil? ? default : value }
         end
       end
 

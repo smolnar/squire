@@ -12,7 +12,7 @@ describe Hash do
     end
 
     it 'should merge hashes deeply with block' do
-      merge = { a: [:a, 1, 1], b: 2, c: [:c, 3, 3], d: 4, nested: { a: [:a, 1, 2], b: 3 }}
+      merge = { a: [:a, 1, 1], b: 2, c: [:c, 3, 3], d: [:d, nil, 4], nested: { a: [:a, 1, 2], b: [:b, nil, 3] }}
 
       (a.deep_merge(b) { |key, old, new| [key, old, new] }).should eql(merge)
     end
