@@ -1,3 +1,7 @@
+### 1.2.6
+* Fix fatal bug overriding base values
+  * Samuel Molnár
+
 ### 1.2.5
 * Use HashWithIndifferentAccess for accessing parser result
 * Add better string representation of Squire::Settings

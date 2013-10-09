@@ -1,15 +1,13 @@
 require 'spec_helper'
 
 describe Squire::Configuration do
-  subject { described_class.new }
-
   let(:hash) {
     {
       defaults: {
         nested: {
           b: 3,
-          c: 4,
-          d: true
+          d: true,
+          c: 4
         }
       },
       development: {
@@ -20,7 +18,10 @@ describe Squire::Configuration do
         }
       },
       production: {
-        a: 3
+        a: 3,
+        nested: {
+          b: 4
+        }
       }
     }
   }
@@ -70,6 +71,13 @@ describe Squire::Configuration do
       subject.settings.nested.b.should eql(2) # from development.nested.b
       subject.settings.nested.d.should be_false # from development.nested.d
       subject.settings.nested.c.should eql(4) # from defaults.nested.c
+
+      subject.source    hash
+      subject.namespace :production, base: :defaults
+
+      subject.settings.a.should eql(3)
+      subject.settings.nested.b.should eql(4) # from development.nested.b
+      subject.settings.nested.d.should be_true # from development.nested.d
     end
   end
 
