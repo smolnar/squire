@@ -11,7 +11,7 @@ describe Squire::Base do
     subject.squire.reload!
   end
 
-  it 'should properly setup base configuration' do
+  it 'properly sets up base configuration' do
     subject.squire.source    development: { a: 1, b: 2 }
     subject.squire.namespace :development
 
@@ -19,23 +19,23 @@ describe Squire::Base do
       config.c = 3
     end
 
-    subject.config.a.should eql(1)
-    subject.config.b.should eql(2)
-    subject.config.c.should eql(3)
+    expect(subject.config.a).to eql(1)
+    expect(subject.config.b).to  eql(2)
+    expect(subject.config.c).to eql(3)
 
-    subject.a.should eql(1)
-    subject.b.should eql(2)
-    subject.c.should eql(3)
+    expect(subject.a).to eql(1)
+    expect(subject.b).to eql(2)
+    expect(subject.c).to eql(3)
 
     expect { subject.d }.to raise_error(Squire::MissingSettingError)
   end
 
-  it 'should properly delegate keys' do
+  it 'properly delegates keys' do
     subject.squire.source    test: { a: 1, b: 2 }
     subject.squire.namespace :test
 
-    subject.a.should eql(1)
-    subject.b.should eql(2)
+    expect(subject.a).to eql(1)
+    expect(subject.b).to eql(2)
 
     expect { subject.c }.to raise_error(Squire::MissingSettingError, /Missing setting 'c' in 'test'/)
   end

@@ -13,7 +13,7 @@ describe Squire::Proxy do
 
   let(:another) { AnotherProxiedConfiguration}
 
-  it 'should properly setup proxied configuration' do
+  it 'properly sets up proxied configuration' do
     subject.squire.source    development: { a: 1, b: 2 }
     subject.squire.namespace :development
 
@@ -21,26 +21,26 @@ describe Squire::Proxy do
       config.c = 3
     end
 
-    subject.config.a.should eql(1)
-    subject.config.b.should eql(2)
-    subject.config.c.should eql(3)
+    expect(subject.config.a).to eql(1)
+    expect(subject.config.b).to eql(2)
+    expect(subject.config.c).to eql(3)
 
     expect { subject.a }.to raise_error(NoMethodError)
   end
 
-  it 'should properly setup separate proxies' do
+  it 'properly sets up separate proxies' do
     subject.squire.source    development: { a: 1, b: 2 }
     subject.squire.namespace :development
 
     another.squire.source    production: { a: 3, b: 4 }
     another.squire.namespace :production
 
-    subject.squire.namespace.should eql(:development)
-    subject.config.a.should eql(1)
-    subject.config.b.should eql(2)
+    expect(subject.squire.namespace).to eql(:development)
+    expect(subject.config.a).to eql(1)
+    expect(subject.config.b).to eql(2)
 
-    another.squire.namespace.should eql(:production)
-    another.config.a.should eql(3)
-    another.config.b.should eql(4)
+    expect(another.squire.namespace).to eql(:production)
+    expect(another.config.a).to eql(3)
+    expect(another.config.b).to eql(4)
   end
 end

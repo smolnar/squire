@@ -5,17 +5,17 @@ require 'spec_helper'
 describe Squire::Settings do
   subject { Squire::Settings }
 
-  it 'should define simple configuration' do
+  it 'defines simple configuration' do
     config = subject.new
 
     config.a = 1
     config.b = 2
 
-    config.a.should eql(1)
-    config.b.should eql(2)
+    expect(config.a).to eql(1)
+    expect(config.b).to eql(2)
   end
 
-  it 'should define nested configuration' do
+  it 'defines nested configuration' do
     config = subject.new
 
     config.nested do |nested|
@@ -26,11 +26,11 @@ describe Squire::Settings do
       nested.b = 2
     end
 
-    config.nested.a.should eql(1)
-    config.nested.b.should eql(2)
+    expect(config.nested.a).to eql(1)
+    expect(config.nested.b).to eql(2)
   end
 
-  it 'should check if the value is set' do
+  it 'checks if the value is set' do
     config = subject.new
 
     config.a = 1
@@ -38,13 +38,13 @@ describe Squire::Settings do
       nested.b = 2
     end
 
-    config.a?.should        be_true
-    config.nested.b?.should be_true
-    config.nested.a?.should be_false
-    config.global?.should   be_false
+    expect(config.a?).to        be_true
+    expect(config.nested.b?).to be_true
+    expect(config.nested.a?).to be_false
+    expect(config.global?).to   be_false
   end
 
-  it 'should cache value after setting' do
+  it 'caches value after setting' do
     config = subject.new
 
     config.a = 1
@@ -52,18 +52,18 @@ describe Squire::Settings do
       nested.b = 2
     end
 
-    config.should respond_to(:a)
-    config.nested.should respond_to(:b)
+    expect(config).to respond_to(:a)
+    expect(config.nested).to respond_to(:b)
   end
 
-  it 'should raise error when setting is missing' do
+  it 'raises error when setting is missing' do
     config = subject.new
 
     expect { config.a }.to raise_error(Squire::MissingSettingError, /Missing setting 'a'/)
   end
 
   describe '#to_s' do
-    it 'should convert settings to string representation' do
+    it 'converts settings to string representation' do
       config = subject.new
 
       config.a = 1
@@ -73,24 +73,24 @@ describe Squire::Settings do
         nested.c = 3
       end
 
-      config.to_s.should eql('#<Squire::Settings a=1, b=2, nested=#<Squire::Settings c=3>>')
+      expect(config.to_s).to eql('#<Squire::Settings a=1, b=2, nested=#<Squire::Settings c=3>>')
     end
   end
 
   describe '#[]' do
-    it 'should allow accesing keys in hash manner' do
+    it 'allows accesing keys in hash manner' do
       config = subject.new
 
       config.a = 1
 
-      config[:a].should  eql(1)
-      config['a'].should eql(1)
-      config[:b].should  be_nil
+      expect(config[:a]).to  eql(1)
+      expect(config['a']).to eql(1)
+      expect(config[:b]).to  be_nil
     end
   end
 
   describe '#to_hash' do
-    it 'should properly dump settings as hash' do
+    it 'properly dumps settings as hash' do
       config = subject.new
 
       config.a = 1
@@ -105,7 +105,7 @@ describe Squire::Settings do
         end
       end
 
-      config.to_hash.should eql({
+      expect(config.to_hash).to eql({
         a: 1,
         b: 2,
         nested: {
@@ -120,7 +120,7 @@ describe Squire::Settings do
   end
 
   describe '.from_hash' do
-    it 'it should parse settings from hash' do
+    it 'parses settings from hash' do
       settings = subject.from_hash({
         a: 1,
         b: 2,
@@ -133,15 +133,15 @@ describe Squire::Settings do
         }
       })
 
-      settings.a.should eql(1)
-      settings.b.should eql(2)
+      expect(settings.a).to eql(1)
+      expect(settings.b).to eql(2)
 
       settings.nested do |nested|
-        nested.c.should eql(3)
-        nested.d.should eql(4)
+        expect(nested.c).to eql(3)
+        expect(nested.d).to eql(4)
 
         nested.other do |other|
-          other.e.should eql(5)
+          expect(other.e).to eql(5)
         end
       end
     end
