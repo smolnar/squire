@@ -62,6 +62,18 @@ describe Squire::Settings do
     expect { config.a }.to raise_error(Squire::MissingSettingError, /Missing setting 'a'/)
   end
 
+  it 'behaves as plain object' do
+    config = subject.new
+
+    config.puts = 1
+    config.test do |nested|
+      nested.a = 2
+    end
+
+    expect(config.puts).to eql(1)
+    expect(config.test.a).to eql(2)
+  end
+
   describe '#to_s' do
     it 'converts settings to string representation' do
       config = subject.new
