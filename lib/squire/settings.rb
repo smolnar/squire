@@ -116,6 +116,7 @@ module Squire
 
       result
     end
+    alias :to_h to_hash
 
     ##
     # Shows string representation of settings
