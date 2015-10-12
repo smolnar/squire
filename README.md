@@ -1,4 +1,7 @@
 # Squire
+
+[![Build Status](https://travis-ci.org/smolnar/squire.svg)](https://travis-ci.org/smolnar/squire)
+
 Squire handles your configuration per class/file by common config DSL and extensible source formats.
 
 It's designed to support multiple formats (for now, Hash and YAML) and replace [Settingslogic](https://github.com/binarylogic/settingslogic) that lacks some crutial features like default/base namespace or extensibility for another source formats.
@@ -30,9 +33,9 @@ class Elephant
 
   squire.source    'source.yml' # or Hash
   squire.namespace 'namespace'
-    
+
   # or 
-    
+
   squire do
     namespace 'namespace'
     ....
@@ -50,7 +53,7 @@ Elephant.config.a? # => true
 # You can change loaded settings as you like during runtime
 Elephant.config do |config|
   config.a = 1
-  
+
   config.nested do |nested|
     ....
   end
@@ -69,14 +72,14 @@ For replacing Settingslogic functionality, you can refactor your configuration l
 common: &common
   a: 1
   b: 2
-    
+
   nested:
     c: 3
     d: 5
-        
+
 namespace:
   <<: *common
-    
+
   nested:
     d: 4
 ```
@@ -84,7 +87,7 @@ namespace:
 ```ruby
 class Configuration
   include Squire::Base
-    
+
   squire.source    'source.yml'
   squire.namespace 'namespace', base: :common
 end
