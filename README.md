@@ -1,6 +1,6 @@
 # Squire
 
-[![Build Status](https://travis-ci.org/smolnar/squire.svg)](https://travis-ci.org/smolnar/squire)
+[![Build Status](https://travis-ci.org/smolnar/squire.svg?branch=master)](https://travis-ci.org/smolnar/squire)
 
 Squire handles your configuration per class/file by common config DSL and extensible source formats.
 
