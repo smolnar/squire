@@ -49,7 +49,7 @@ module Squire
     def settings(&block)
       @settings ||= setup
 
-      settings = @namespace ? @settings.get_value(@namespace) : @settings
+      settings = defined?(@namespace) ? @settings.get_value(@namespace) : @settings
 
       if block_given?
         block.arity == 0 ? settings.instance_eval(&block) : block.call(settings)
